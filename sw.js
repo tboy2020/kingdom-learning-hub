@@ -1,5 +1,5 @@
 /* Kingdom Learning Hub — service worker. Bump CACHE on every change. */
-var CACHE = 'learnhub-v1';
+var CACHE = 'learnhub-v2';
 var SHELL = [
   './',
   './index.html',
