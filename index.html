@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kingdom Learning Hub</title>
+<meta name="theme-color" content="#0f1e33">
+<meta name="description" content="One tap to every learning app — math, English, reading, spelling and study tools for the champions.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Baloo+2:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0f1e33; --navy2:#13263f; --card:#17304f; --card2:#1c3a5e;
+    --gold:#e3bd5a; --gold-soft:#f6e3a8; --ink:#eaf1fb; --muted:#9db4d4;
+    --line:rgba(227,189,90,.18);
+    --shadow:0 10px 30px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0}
+  body{
+    font-family:'Baloo 2',system-ui,sans-serif;
+    background:
+      radial-gradient(1200px 600px at 50% -10%, rgba(40,74,120,.55) 0%, transparent 60%),
+      radial-gradient(900px 500px at 100% 0%, rgba(227,189,90,.10) 0%, transparent 55%),
+      var(--navy);
+    background-color:var(--navy);
+    color:var(--ink);
+    min-height:100vh;
+    padding:0 16px 48px;
+    overflow-x:hidden;
+  }
+  .wrap{max-width:720px;margin:0 auto}
+
+  header{text-align:center;padding:30px 6px 10px}
+  .crest{font-size:40px;line-height:1;filter:drop-shadow(0 3px 8px rgba(0,0,0,.4))}
+  h1{
+    font-family:'Fraunces',serif;font-weight:700;
+    font-size:clamp(28px,7.5vw,40px);line-height:1.05;
+    margin:10px 0 4px;letter-spacing:.2px;
+    background:linear-gradient(180deg,var(--gold-soft),var(--gold));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .sub{color:var(--muted);font-size:15px;margin:0 auto;max-width:34ch}
+  .verse{color:var(--gold);font-family:'Fraunces',serif;font-style:italic;font-size:14px;margin-top:10px;opacity:.9}
+
+  .tools{display:flex;gap:10px;align-items:center;margin:18px 0 6px}
+  .search{
+    flex:1;display:flex;align-items:center;gap:8px;
+    background:var(--navy2);border:1px solid var(--line);border-radius:14px;
+    padding:11px 14px;
+  }
+  .search input{
+    flex:1;background:transparent;border:0;outline:0;color:var(--ink);
+    font-family:inherit;font-size:16px;
+  }
+  .search input::placeholder{color:#6f87a9}
+  #install{
+    display:none;white-space:nowrap;border:0;cursor:pointer;
+    font-family:inherit;font-weight:700;font-size:14px;
+    color:#1a1407;background:linear-gradient(180deg,var(--gold-soft),var(--gold));
+    padding:11px 14px;border-radius:14px;box-shadow:var(--shadow);
+  }
+
+  .chips{display:flex;gap:8px;overflow-x:auto;padding:12px 2px 4px;scrollbar-width:none}
+  .chips::-webkit-scrollbar{display:none}
+  .chip{
+    white-space:nowrap;border:1px solid var(--line);background:var(--navy2);
+    color:var(--muted);font-family:inherit;font-weight:600;font-size:13.5px;
+    padding:8px 13px;border-radius:999px;cursor:pointer;transition:.15s;
+  }
+  .chip.on{background:linear-gradient(180deg,var(--gold-soft),var(--gold));color:#1a1407;border-color:transparent}
+
+  .group{margin-top:22px}
+  .group h2{
+    font-family:'Fraunces',serif;font-weight:600;font-size:18px;
+    margin:0 0 12px;display:flex;align-items:center;gap:9px;color:var(--gold-soft);
+  }
+  .group h2 .n{font-size:13px;color:var(--muted);font-family:'Baloo 2';font-weight:600}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:460px){.grid{grid-template-columns:1fr}}
+
+  .card{
+    display:flex;gap:12px;align-items:flex-start;text-decoration:none;color:inherit;
+    background:linear-gradient(165deg,var(--card2),var(--card));
+    border:1px solid var(--line);border-radius:18px;padding:15px 15px 16px;
+    box-shadow:var(--shadow);position:relative;overflow:hidden;transition:transform .12s, border-color .15s;
+  }
+  .card:active{transform:scale(.98)}
+  .card::after{
+    content:"";position:absolute;inset:0;border-radius:18px;pointer-events:none;
+    background:linear-gradient(120deg,rgba(255,255,255,.06),transparent 40%);
+  }
+  .emo{font-size:28px;line-height:1;flex:none;margin-top:2px;filter:drop-shadow(0 2px 5px rgba(0,0,0,.35))}
+  .meta{min-width:0}
+  .name{font-weight:700;font-size:16px;line-height:1.15;margin:0 0 3px}
+  .desc{color:var(--muted);font-size:13px;line-height:1.35;margin:0}
+  .go{position:absolute;right:13px;bottom:12px;color:var(--gold);font-size:17px;opacity:.65}
+
+  .empty{text-align:center;color:var(--muted);padding:40px 0;display:none}
+  footer{text-align:center;color:var(--muted);font-size:13px;margin-top:34px;line-height:1.6}
+  footer .amhg{color:var(--gold);font-family:'Fraunces',serif;font-style:italic}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="crest">👑📚</div>
+    <h1>Kingdom Learning Hub</h1>
+    <p class="sub">One home for every learning app — tap any card to open it.</p>
+    <p class="verse">“Train up a child in the way he should go.” — Proverbs 22:6</p>
+  </header>
+
+  <div class="tools">
+    <label class="search">
+      <span aria-hidden="true">🔎</span>
+      <input id="q" type="search" inputmode="search" placeholder="Search apps…" autocomplete="off">
+    </label>
+    <button id="install" type="button">⤓ Install</button>
+  </div>
+
+  <div class="chips" id="chips"></div>
+
+  <main id="list"></main>
+  <div class="empty" id="empty">No apps match that search.</div>
+
+  <footer>
+    Built for the champions — math, English &amp; more.<br>
+    Glory to God alone · <span class="amhg">AMHG</span>
+  </footer>
+</div>
+
+<script>
+/* ---- The learning apps ---- */
+var GROUPS = [
+  { key:'math', label:'Math', emo:'📐', apps:[
+    { emo:'🧮', name:'Summit Math 8', desc:'Grade-8 math mastery', url:'https://tboy2020.github.io/summit-math-8/' },
+    { emo:'✝️', name:'Kingdom Kids Math', desc:'Faith-based math for kids', url:'https://tboy2020.github.io/Kingdom-Math/' },
+    { emo:'🪨', name:'Solid Ground', desc:'Maths mastery, step by step', url:'https://tboy2020.github.io/solid-ground/' }
+  ]},
+  { key:'english', label:'English · Reading · Spelling', emo:'📖', apps:[
+    { emo:'✍️', name:'Summit English 8', desc:'Grade-8 English mastery', url:'https://tboy2020.github.io/summit-english-8/' },
+    { emo:'🔤', name:'Kingdom Words', desc:'Faith-based word games', url:'https://tboy2020.github.io/kingdom-words/' },
+    { emo:'🏆', name:'Kingdom Speller', desc:'2nd-grade spelling · Dominion', url:'https://tboy2020.github.io/dominion-speller/' },
+    { emo:'🧱', name:'Spell & Stack', desc:'Pass-and-play word game', url:'https://tboy2020.github.io/Kids-Word-Game/' },
+    { emo:'🌍', name:"Anu's Reading World", desc:'Read-aloud reading', url:'https://tboy2020.github.io/Anu-Reader/' },
+    { emo:'📗', name:"Anu's Reading Words", desc:'1,004-word read-aloud trainer', url:'https://tboy2020.github.io/anu-reading-words/' },
+    { emo:'🎙️', name:"Anu's Reading Words+", desc:'Read 10, say one (mic check)', url:'https://tboy2020.github.io/anu-reading-words-plus/' },
+    { emo:'🍳', name:'Read & Cook', desc:'Dyslexia-friendly reader · Marvelous', url:'https://tboy2020.github.io/marvelous-reader/' }
+  ]},
+  { key:'allsub', label:'All-subjects learning', emo:'🎓', apps:[
+    { emo:'🏛️', name:'Kingdom Kids Academy', desc:'Math, Language Arts & Science', url:'https://tboy2020.github.io/Kingdom-Kids-Academy/' },
+    { emo:'🕹️', name:'Kids Learning Arcade', desc:'Spelling, math, phonics, memory', url:'https://tboy2020.github.io/Kids-Learning-Arcade/' },
+    { emo:'⭐', name:'Anu Can!', desc:'Kindergarten superpowers', url:'https://tboy2020.github.io/anu-can/' }
+  ]},
+  { key:'school', label:'School-readiness · routine', emo:'🏫', apps:[
+    { emo:'🔊', name:'Sound Steps', desc:'Phonics, step by step', url:'https://tboy2020.github.io/sound-steps/' },
+    { emo:'👣', name:'Steady Steps', desc:'Steady learning steps', url:'https://tboy2020.github.io/steady-steps/' },
+    { emo:'🥾', name:'Morning Marchers', desc:'School-morning routine', url:'https://tboy2020.github.io/morning-marchers/' },
+    { emo:'⏱️', name:'Get Ready, Champions', desc:'Morning countdown', url:'https://tboy2020.github.io/get-ready-countdown/' }
+  ]},
+  { key:'study', label:'Study & exam prep', emo:'📚', apps:[
+    { emo:'🔬', name:'Study Lab', desc:'Notes, photo-to-text, tutor · Marvelous', url:'https://tboy2020.github.io/marvelous-study/' },
+    { emo:'🏠', name:'Marvelous Hub', desc:"Marvelous's study home", url:'https://tboy2020.github.io/marvelous-hub/' },
+    { emo:'🩺', name:'Called to Care', desc:'HESI A2 read-aloud prep', url:'https://tboy2020.github.io/called-to-care/' },
+    { emo:'📝', name:'HESI A2 Prep', desc:'Nursing entrance prep', url:'https://tboy2020.github.io/hesi-a2-prep/' },
+    { emo:'📄', name:'HESI A2 Prep v2', desc:'Nursing entrance prep · v2', url:'https://tboy2020.github.io/hesi-a2-prep-v2/' }
+  ]}
+];
+
+var listEl = document.getElementById('list');
+var emptyEl = document.getElementById('empty');
+var chipsEl = document.getElementById('chips');
+var qEl = document.getElementById('q');
+var filter = 'all';
+var query = '';
+
+function makeChips(){
+  var all = [{key:'all',label:'All',emo:'✨'}].concat(GROUPS);
+  chipsEl.innerHTML = '';
+  all.forEach(function(g){
+    var b = document.createElement('button');
+    b.className = 'chip' + (g.key===filter ? ' on' : '');
+    b.textContent = (g.emo? g.emo+' ' : '') + g.label;
+    b.onclick = function(){ filter = g.key; makeChips(); render(); };
+    chipsEl.appendChild(b);
+  });
+}
+
+function render(){
+  listEl.innerHTML = '';
+  var shown = 0;
+  GROUPS.forEach(function(g){
+    if(filter!=='all' && filter!==g.key) return;
+    var apps = g.apps.filter(function(a){
+      if(!query) return true;
+      var hay = (a.name+' '+a.desc+' '+g.label).toLowerCase();
+      return hay.indexOf(query) >= 0;
+    });
+    if(!apps.length) return;
+    shown += apps.length;
+
+    var sec = document.createElement('section');
+    sec.className = 'group';
+    var h = document.createElement('h2');
+    h.innerHTML = '<span>'+g.emo+'</span><span>'+g.label+'</span><span class="n">'+apps.length+'</span>';
+    sec.appendChild(h);
+
+    var grid = document.createElement('div');
+    grid.className = 'grid';
+    apps.forEach(function(a){
+      var card = document.createElement('a');
+      card.className = 'card';
+      card.href = a.url; card.target = '_blank'; card.rel = 'noopener';
+      card.innerHTML =
+        '<div class="emo">'+a.emo+'</div>'+
+        '<div class="meta"><p class="name">'+a.name+'</p><p class="desc">'+a.desc+'</p></div>'+
+        '<div class="go">→</div>';
+      grid.appendChild(card);
+    });
+    sec.appendChild(grid);
+    listEl.appendChild(sec);
+  });
+  emptyEl.style.display = shown ? 'none' : 'block';
+}
+
+qEl.addEventListener('input', function(){ query = this.value.trim().toLowerCase(); render(); });
+
+makeChips();
+render();
+
+/* ---- Install prompt ---- */
+var deferred = null;
+var installBtn = document.getElementById('install');
+window.addEventListener('beforeinstallprompt', function(e){
+  e.preventDefault(); deferred = e; installBtn.style.display = 'inline-block';
+});
+installBtn.addEventListener('click', function(){
+  if(!deferred) return;
+  deferred.prompt();
+  deferred.userChoice.then(function(){ deferred = null; installBtn.style.display = 'none'; });
+});
+window.addEventListener('appinstalled', function(){ installBtn.style.display = 'none'; });
+
+/* ---- Service worker ---- */
+if('serviceWorker' in navigator){
+  window.addEventListener('load', function(){
+    navigator.serviceWorker.register('sw.js').catch(function(){});
+  });
+}
+</script>
+</body>
+</html>
